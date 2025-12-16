@@ -1,5 +1,6 @@
 # OTUS L3 Terraform Project
-[(Результаты проверок в "Discussions")[https://github.com/aastlt/otus-l3-terraform/discussions/2]]
+
+[Результаты проверок в "Discussions"](https://github.com/aastlt/otus-l3-terraform/discussions/2)
 
 Проект для автоматизированного развертывания инфраструктуры в Yandex Cloud с использованием Terraform и Ansible.
 
