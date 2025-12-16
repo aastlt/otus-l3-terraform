@@ -2,6 +2,8 @@
 
 [![Результаты проверок в "Discussions"](https://github.com/aastlt/otus-l3-terraform/discussions/2)]
 
+[![Comments](img.shields.io)](github.com)
+
 Проект для автоматизированного развертывания инфраструктуры в Yandex Cloud с использованием Terraform и Ansible.
 
 ## Описание
