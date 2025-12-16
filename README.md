@@ -1,6 +1,6 @@
 # OTUS L3 Terraform Project
 
-[Результаты проверок в "Discussions"](https://github.com/aastlt/otus-l3-terraform/discussions/2)
+[![Результаты проверок в "Discussions"](https://github.com/aastlt/otus-l3-terraform/discussions/2)]
 
 Проект для автоматизированного развертывания инфраструктуры в Yandex Cloud с использованием Terraform и Ansible.
 
@@ -186,19 +186,3 @@ MIT License
 ## Автор
 
 aastlt
-
-<script src="https://giscus.app/client.js"
-        data-repo="aastlt/otus-l3-terraform"
-        data-repo-id="R_kgDOQpmijA"
-        data-category="Announcements"
-        data-category-id="DIC_kwDOQpmijM4Cz3J5"
-        data-mapping="pathname"
-        data-strict="0"
-        data-reactions-enabled="1"
-        data-emit-metadata="0"
-        data-input-position="bottom"
-        data-theme="preferred_color_scheme"
-        data-lang="ru"
-        crossorigin="anonymous"
-        async>
-</script>
