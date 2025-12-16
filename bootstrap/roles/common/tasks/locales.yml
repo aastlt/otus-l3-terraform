@@ -1,0 +1,42 @@
+---
+- name: Debian | Install locales
+  become: true
+  block:
+    - name: 'Debian | Ensure the locales package are installed'
+      ansible.builtin.apt:
+        name: '{{ __locales_packages }}'
+        update_cache: true
+        cache_valid_time: 3600
+        state: present
+      check_mode: false
+      tags: [common]
+
+    - name: Debian | Ensure that locales are present
+      community.general.locale_gen:
+        name: '{{ common_locale_present.lang }}'
+        state: present
+      loop: '{{ common_locales_present_list }}'
+      loop_control:
+        loop_var: common_locale_present
+      when: common_locales_present_list | length > 0
+      tags: [common]
+
+    - name: Debian | Ensure that locales are absent
+      community.general.locale_gen:
+        name: '{{ common_locale_absent.lang }}'
+        state: absent
+      loop: '{{ common_locales_absent_list }}'
+      loop_control:
+        loop_var: common_locale_absent
+      when: common_locales_absent_list | length > 0
+      tags: [common]
+
+- name: Configure locales
+  become: true
+  ansible.builtin.template:
+    src: 'locale.j2'
+    dest: '{{ __locales_config_path }}'
+    owner: root
+    group: root
+    mode: '0644'
+  tags: [common]

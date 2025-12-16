@@ -1,0 +1,33 @@
+# Environment-specific variables
+
+# SSH configuration
+ssh_port: 50022
+ansible_port: 22
+
+# timezone
+tz: Europe/Moscow
+
+# sysctl
+sysctl_default:
+  net.ipv6.conf.default.disable_ipv6:
+    value: 1
+    state: present
+  net.ipv6.conf.all.disable_ipv6:
+    value: 1
+    state: present
+  net.core.somaxconn:
+    value: 4096
+    state: present
+  net.ipv4.tcp_timestamps:
+    value: 0
+    state: present
+
+sysctl_custom:
+  net.ipv4.ip_forward:
+    value: 1
+    state: present
+
+# locales
+common_locales_present_list:
+  - lang: en_US.UTF-8
+  - lang: ru_RU.UTF-8

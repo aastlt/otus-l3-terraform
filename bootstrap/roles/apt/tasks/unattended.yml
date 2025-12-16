@@ -1,0 +1,29 @@
+---
+
+- name: Install unattended-upgrades
+  ansible.builtin.apt:
+    name: unattended-upgrades
+    update_cache: true
+  tags: [apt]
+
+- name: Check daily-timer
+  ansible.builtin.stat:
+    path: /etc/systemd/system/apt-daily-upgrade.timer.d
+  register: d_timer
+  tags: [apt]
+
+- name: Create a directory if it does not exist
+  ansible.builtin.file:
+    path: /etc/systemd/system/apt-daily-upgrade.timer.d
+    state: directory
+    mode: "755"
+  when: not d_timer.stat.exists
+  tags: [apt]
+
+- name: Update conf daily-timer
+  ansible.builtin.template:
+    src: unattended.conf.j2
+    dest: /etc/systemd/system/apt-daily-upgrade.timer.d/override.conf
+    mode: preserve
+  notify: Apt-daily-upgrade.timer restart
+  tags: [apt]

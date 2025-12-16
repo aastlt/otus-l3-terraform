@@ -1,0 +1,26 @@
+# users role defaults: universal behavior
+users_default_shell: /bin/bash
+# users_default_remove: no
+# users_default_force: no
+
+# users role: environment-specific users and groups
+users_list:
+  - name: debian
+    comment: "debian default user"
+    groups:
+      - sudo
+    ssh_keys:
+      - "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCP9TML9/7qFSL2Av4QARf4ikcDxNbLEnzCcv1o8ALFScY4pHeQNfqukHZMjxANS+DiOHD816mG0+\
+        XUfza+Va8eFbUdJ/dHTLIourUTv7h+c1b9oQPioNwpo8D80U/eJB7Ymvf98TpqvoOAoQU56rhostabhE4es6+4TdtDzGq+xsEnkqBByLk0xyj6aG5j1xVr\
+        otsjIIk4Fdt84nnbuvGslqBD8ayb++FbOPXMCkfLITuRW7UbMTbZNLIoof6IgqwPtG7MNRVeI4B375OJO2gL5B64kogDbVxk91k6FS5qi68vIpeAaOO5QGn\
+        by0t3VikJKG29/7iJTS4y/cX51keDH7CPda2JV6Vod5wD++1pGgNfpqUPHgSVr7esYXiBMmQs14W8oizheTDDlvLyE+9p5+oL/RxUzH/QQRqGu3a3/7Iv/9R\
+        wchG2D90w2Roih5yGypeDX0DmE5M+oqueUM9vymeYss2Z/Hrtc6LZd+tyro0eihQ34oHP359ODaa9P0s= aastlt@ubun"
+    sudo_nopassword: true
+    state: present
+
+  - name: testuser
+    state: absent
+
+users_groups_list:
+  - name: testgroup
+    state: absent

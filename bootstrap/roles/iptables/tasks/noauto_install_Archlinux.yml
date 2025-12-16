@@ -1,0 +1,22 @@
+---
+- name: Ensure we are using pacman
+  ansible.builtin.fail:
+    msg: "This role only supports {{ ansible_os_family }} systems that use pacman as a package manager."
+  when: ansible_pkg_mgr != "pacman"
+  tags: [iptables]
+
+- name: Install iptables via pacman
+  when: ansible_pkg_mgr == "pacman"
+  block:
+    - name: Update pacman cache
+      community.general.pacman:
+        update_cache: true
+      become: true
+      tags: [iptables]
+
+    - name: Ensure iptables is installed
+      community.general.pacman:
+        name: "{{ iptables_distro_pkgs }}"
+        state: present
+      become: true
+      tags: [iptables]

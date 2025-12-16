@@ -1,0 +1,7 @@
+{{ ansible_managed | comment }}
+
+127.0.0.1   localhost
+{{ internal_ip }}   localhost
+
+# host
+{{ external_ip }}	{{ inventory_hostname }}.{{ domain }} {{ inventory_hostname }}

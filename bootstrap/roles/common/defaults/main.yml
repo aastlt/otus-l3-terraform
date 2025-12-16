@@ -1,0 +1,9 @@
+# Generate locales (первая локаль списка будет установлена установлена как основная системная локаль, а остальные будут сгенерированы модулем locale_gen)
+common_locales_present_list: []
+
+common_locales_absent_list: []
+
+# Configure locales
+common_locales_lang: '{{ common_locales_present_list[0].lang if common_locales_present_list | length > 0 else "en_US.UTF-8" }}'
+common_locales_language: ''
+common_locales_lc: {}

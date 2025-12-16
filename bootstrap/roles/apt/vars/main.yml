@@ -1,0 +1,55 @@
+apt_packages_default:
+  - bash-completion
+  - binutils
+  - bzip2
+  - ca-certificates
+  - coreutils
+  - curl
+  - diffutils
+  - dmidecode
+  - dnsutils
+  - findutils
+  - gettext
+  - git
+  - gnupg
+  - gnupg2
+  - gnutls-bin
+  - htop
+  - ifupdown
+  - iotop
+  - iptables
+  - iptables-persistent
+  - less
+  - libtool
+  - libxml2
+  - locales
+  - logrotate
+  - lsof
+  - mc
+  - mutt
+  - net-tools
+  - openssl
+  - perl
+  - perl-base
+  - psmisc
+  - python3
+  - python3-apt
+  - python3-pip
+  - python3-lxml
+  - python3-boto3
+  - rsync
+  - rsyslog
+  - rsyslog-gnutls
+  - screen
+  - smartmontools
+  - sudo
+  - sysstat
+  - tmux
+
+
+apt_packages_absent_default:
+  - mailutils
+  - exim4
+  - exim4-base
+  - exim4-config
+  - exim4-daemon-light

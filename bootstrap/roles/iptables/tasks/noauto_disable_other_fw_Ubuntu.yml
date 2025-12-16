@@ -1,0 +1,17 @@
+---
+- name: Disable the ufw firewall
+  when: iptables_disable_ufw
+  block:
+    - name: Check if ufw package is installed
+      ansible.builtin.package_facts:
+        manager: auto
+      tags: [iptables]
+
+    - name: Disable the ufw firewall
+      ansible.builtin.service:
+        name: ufw
+        state: stopped
+        enabled: false
+      become: true
+      when: "'ufw' in ansible_facts.packages"
+      tags: [iptables]

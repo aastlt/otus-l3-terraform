@@ -1,0 +1,64 @@
+---
+- name: Collect groups from all users
+  ansible.builtin.set_fact:
+    _users_groups: "{{ users_list | default([]) | map(attribute='groups') | list | flatten() | default([]) | unique }}"
+  when: users_list | default([]) | length > 0
+  tags: [users]
+
+- name: Ensure groups exist
+  ansible.builtin.group:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ _users_groups }}"
+  when: _users_groups is defined and _users_groups | length > 0
+  tags: [users]
+
+- name: Manage user accounts
+  ansible.builtin.user:
+    name: "{{ item.name }}"
+    state: "{{ item.state | default('present') }}"
+    groups: "{{ item.groups | join(',') if item.groups is defined else omit }}"
+    comment: "{{ item.comment | default(omit) }}"
+    uid: "{{ item.uid | default(omit) }}"
+    shell: "{{ item.shell | default(users_default_shell | default('/bin/bash')) }}"
+    create_home: true
+    password: "{{ item.password | default(omit) }}"
+    remove: "{{ (item.state | default('present')) == 'absent' }}"
+  loop: "{{ users_list | default([]) }}"
+  tags: [users]
+
+- name: Add SSH keys for users
+  ansible.posix.authorized_key:
+    user: "{{ item.0.name }}"
+    key: "{{ item.1 }}"
+    state: present
+  loop: "{{ users_list | default([]) | subelements('ssh_keys', skip_missing=True) }}"
+  when: users_list | default([]) | length > 0 and not ansible_check_mode
+  tags: [users]
+
+- name: Ensure sudoers file for admin users
+  ansible.builtin.copy:
+    dest: "/etc/sudoers.d/{{ item.name }}"
+    content: "{{ item.name }} ALL=(ALL) NOPASSWD:ALL\n"
+    owner: root
+    group: root
+    mode: '0440'
+  loop: "{{ users_list | default([]) }}"
+  when: (item.sudo_nopassword | default(false)) and (item.state | default('present')) == 'present'
+  tags: [users]
+
+- name: Remove sudoers file for non-admin or removed users
+  ansible.builtin.file:
+    path: "/etc/sudoers.d/{{ item.name }}"
+    state: absent
+  loop: "{{ users_list | default([]) }}"
+  when: (not (item.sudo_nopassword | default(false))) or (item.state | default('present')) == 'absent'
+  tags: [users]
+
+- name: Manage explicit groups list (create or remove as requested)
+  ansible.builtin.group:
+    name: "{{ item.name }}"
+    state: "{{ item.state | default('present') }}"
+  loop: "{{ users_groups_list | default([]) }}"
+  when: users_groups_list is defined and users_groups_list | length > 0
+  tags: [users]

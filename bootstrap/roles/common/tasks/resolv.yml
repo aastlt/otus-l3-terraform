@@ -1,0 +1,19 @@
+---
+- name: Update hostname
+  ansible.builtin.hostname:
+    name: "{{ inventory_hostname }}"
+  tags: [common]
+
+- name: Update /etc/hosts
+  ansible.builtin.template:
+    src: hosts.j2
+    dest: /etc/hosts
+    mode: "0644"
+  tags: [common]
+
+- name: "Update resolv.conf"
+  ansible.builtin.template:
+    src: "resolv.conf.j2"
+    dest: "/etc/resolv.conf"
+    mode: "0644"
+  tags: [common]

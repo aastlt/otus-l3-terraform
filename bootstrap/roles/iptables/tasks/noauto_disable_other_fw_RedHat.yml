@@ -1,0 +1,17 @@
+---
+- name: Disable the firewalld service
+  when: iptables_disable_firewalld
+  block:
+    - name: Check if firewalld package is installed
+      ansible.builtin.package_facts:
+        manager: auto
+      tags: [iptables]
+
+    - name: Disable the firewalld service
+      ansible.builtin.service:
+        name: firewalld
+        state: stopped
+        enabled: false
+      become: true
+      when: "'firewalld' in ansible_facts.packages"
+      tags: [iptables]

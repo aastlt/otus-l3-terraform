@@ -1,0 +1,6 @@
+# SSH role defaults: universal policy configuration
+ssh_users_default_shell: /bin/bash
+ssh_permit_root_login: false
+ssh_password_authentication: false
+ssh_pubkey_authentication: true
+ssh_sshd_allow_groups: []

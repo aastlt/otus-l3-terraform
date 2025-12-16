@@ -1,0 +1,23 @@
+# .gitignore
+
+# local .terraform directories and files
+**/.terraform/*
+.terraform*
+zbackup
+
+# .tfstate files
+*.tfstate
+*.tfstate.*
+
+# own secret vars store.
+personal.auto.tfvars
+
+# ansible
+*.retry
+test.yml
+#-test*
+#*_test*
+*.bak
+.cache
+.venv
+.ansible

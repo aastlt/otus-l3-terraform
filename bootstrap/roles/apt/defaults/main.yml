@@ -1,0 +1,3 @@
+# apt role defaults: universal behavior flags
+apt_update_cache: true
+apt_upgrade: true

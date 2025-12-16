@@ -1,0 +1,52 @@
+---
+# file: roles/common/tasks/ntp.yml
+
+- name: Install packages
+  ansible.builtin.apt:
+    name: ntpsec
+    state: present
+  when: ansible_facts['distribution_major_version']|int > 11
+  tags: [common]
+
+- name: Install packages
+  ansible.builtin.apt:
+    name: ntp
+    state: present
+  when: ansible_facts['distribution_major_version']|int <= 11
+  tags: [common]
+
+- name: NTP Disable IPv6 listening
+  ansible.builtin.lineinfile:
+    dest: /etc/default/ntpsec
+    regexp: "^NTPD_OPTS"
+    line: "NTPD_OPTS='-g -4'"
+  notify: Restart ntp
+  when: ansible_facts['distribution_major_version']|int > 11
+  tags: [common]
+
+- name: NTP Update config
+  ansible.builtin.template:
+    src: ntp.conf.j2
+    dest: /etc/ntpsec/ntp.conf
+    mode: preserve
+  notify: Restart ntp
+  when: ansible_facts['distribution_major_version']|int > 11
+  tags: [common]
+
+- name: NTP Disable IPv6 listening
+  ansible.builtin.lineinfile:
+    dest: /etc/default/ntp
+    regexp: "^NTPD_OPTS"
+    line: "NTPD_OPTS='-g -4'"
+  notify: Restart ntp
+  when: ansible_facts['distribution_major_version']|int <= 11
+  tags: [common]
+
+- name: NTP Update config
+  ansible.builtin.template:
+    src: ntp.conf.j2
+    dest: /etc/ntp.conf
+    mode: preserve
+  notify: Restart ntp
+  when: ansible_facts['distribution_major_version']|int <= 11
+  tags: [common]

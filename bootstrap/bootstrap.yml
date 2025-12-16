@@ -1,0 +1,16 @@
+---
+- name: "Gathering Facts to cache"
+  hosts: all
+  gather_facts: true
+  become: false
+
+- name: Bootstrap setup on all hosts
+  hosts: all
+  become: true
+  gather_facts: false
+  roles:
+    - role: apt
+    - role: common
+    - role: users
+    - role: ssh
+    - role: iptables

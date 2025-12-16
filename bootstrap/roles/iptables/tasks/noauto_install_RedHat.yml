@@ -1,0 +1,22 @@
+---
+- name: Ensure we are using dnf
+  ansible.builtin.fail:
+    msg: "This role only supports {{ ansible_os_family }} systems that use dnf as a package manager."
+  when: ansible_pkg_mgr != "dnf"
+  tags: [iptables]
+
+- name: Install iptables via dnf
+  when: ansible_pkg_mgr == "dnf"
+  block:
+    - name: Update dnf cache
+      ansible.builtin.dnf:
+        update_cache: true
+      become: true
+      tags: [iptables]
+
+    - name: Ensure iptables is installed
+      ansible.builtin.dnf:
+        name: "{{ iptables_distro_pkgs }}"
+        state: present
+      become: true
+      tags: [iptables]

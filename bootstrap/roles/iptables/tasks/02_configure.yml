@@ -1,0 +1,50 @@
+---
+- name: Configure iptables
+  block:
+    - name: Flush iptables rules if playbook runs for the first time
+      ansible.builtin.command:
+        cmd: iptables -F
+        creates: /etc/firewall.bash
+      become: true
+      tags: [iptables]
+
+    - name: Copy firewall script into place
+      ansible.builtin.template:
+        src: "{{ iptables_template }}"
+        dest: /etc/firewall.bash
+        owner: root
+        group: root
+        mode: "0744"
+      become: true
+      notify: Restart Firewall
+      tags: [iptables]
+
+    - name: Copy firewall init script into place
+      ansible.builtin.template:
+        src: firewall.init.j2
+        dest: /etc/init.d/firewall
+        owner: root
+        group: root
+        mode: "0755"
+      become: true
+      when: "ansible_service_mgr != 'systemd'"
+      tags: [iptables]
+
+    - name: Copy firewall systemd unit file into place (for systemd systems)
+      ansible.builtin.template:
+        src: firewall.unit.j2
+        dest: /etc/systemd/system/firewall.service
+        owner: root
+        group: root
+        mode: "0644"
+      become: true
+      when: "ansible_service_mgr == 'systemd'"
+      tags: [iptables]
+
+    - name: Configure the firewall service
+      ansible.builtin.service:
+        name: firewall
+        state: "{{ iptables_state }}"
+        enabled: "{{ iptables_enabled }}"
+      become: true
+      tags: [iptables]

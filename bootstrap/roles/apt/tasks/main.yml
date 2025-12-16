@@ -1,0 +1,48 @@
+---
+- name: Update sources list
+  ansible.builtin.template:
+    src: templates/sources.list.j2
+    dest: /etc/apt/sources.list
+    mode: preserve
+  tags: [apt]
+
+- name: Include package variables from role vars
+  ansible.builtin.include_vars:
+    file: main.yml
+  vars:
+    ansible_role_path: "{{ role_path }}"
+  tags: [apt]
+
+- name: Remove problematic backports repository
+  ansible.builtin.lineinfile:
+    path: /etc/apt/sources.list
+    regexp: '.*bullseye-backports.*'
+    state: absent
+  tags: [apt]
+
+- name: Update apt cache
+  ansible.builtin.apt:
+    update_cache: true
+  when: apt_update_cache | default(false)
+  tags: [apt]
+
+- name: Upgrade packages
+  ansible.builtin.apt:
+    upgrade: dist
+  when: apt_upgrade | default(false)
+  tags: [apt]
+
+- name: Install packages
+  ansible.builtin.apt:
+    name: "{{ apt_packages_default | default([]) }}"
+    state: present
+  tags: [apt]
+
+- name: Uninstall packages
+  ansible.builtin.apt:
+    name: "{{ apt_packages_absent_default | default([]) }}"
+    state: absent
+  tags: [apt]
+
+- name: Unattended upgrades
+  ansible.builtin.import_tasks: "unattended.yml"

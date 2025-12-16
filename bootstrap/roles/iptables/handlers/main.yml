@@ -1,0 +1,7 @@
+---
+- name: Restart Firewall
+  ansible.builtin.service:
+    name: firewall
+    state: restarted
+  become: true
+  tags: [iptables]

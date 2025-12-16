@@ -1,0 +1,20 @@
+iptables_install_method: package
+iptables_state: started
+iptables_enabled: true
+
+iptables_flush_rules_and_chains: true
+
+iptables_template: firewall.bash.j2
+iptables_allowed_tcp_ports:
+  - "50022"
+iptables_allowed_udp_ports: []
+iptables_forwarded_tcp_ports: []
+iptables_forwarded_udp_ports: []
+iptables_additional_rules: []
+iptables_enable_ipv6: true
+iptables_ip6_additional_rules: []
+iptables_log_dropped_packets: true
+
+# Set to true to ensure other firewall management software is disabled.
+iptables_disable_firewalld: false
+iptables_disable_ufw: false

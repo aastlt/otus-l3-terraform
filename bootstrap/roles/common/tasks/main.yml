@@ -1,0 +1,34 @@
+---
+- name: "Set timezone to {{ tz }}"
+  community.general.timezone:
+    name: "{{ tz }}"
+  tags: [common]
+
+- name: "Set sysctl configuration"
+  ansible.posix.sysctl:
+    name: "{{ item.key }}"
+    value: "{{ item.value.value }}"
+    state: "{{ item.value.state }}"
+    sysctl_file: "/etc/sysctl.d/local.conf"
+  with_dict: "{{ sysctl_default | combine(sysctl_custom) if sysctl_custom is defined else sysctl_default }}"
+  when: sysctl_default is defined
+  tags: [common]
+
+- name: "Configure sudoers"
+  ansible.builtin.template:
+    src: sudoers.j2
+    dest: /etc/sudoers
+    mode: preserve
+  tags: [common]
+
+- name: "Configure NTP"
+  ansible.builtin.include_tasks: "ntp.yml"
+  tags: [common]
+
+- name: Install locales
+  ansible.builtin.include_tasks: "locales.yml"
+  tags: [common]
+
+- name: Configure resolv
+  ansible.builtin.include_tasks: "resolv.yml"
+  tags: [common]

@@ -1,0 +1,12 @@
+__locales_packages_dict:
+  CentOS: 'glibc-common'
+  Debian: 'locales'
+  RedHat: ['glibc-common', 'glibc-locale-source']
+
+__locales_packages: '{{ __locales_packages_dict[ansible_distribution] | default(__locales_packages_dict[ansible_os_family]) }}'
+
+__locales_config_path_dict:
+  Debian: '/etc/default/locale'
+  RedHat: '/etc/locale.conf'
+
+__locales_config_path: '{{ __locales_config_path_dict[ansible_os_family] }}'

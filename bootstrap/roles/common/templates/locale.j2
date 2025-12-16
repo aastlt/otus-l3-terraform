@@ -1,0 +1,9 @@
+{{ ansible_managed | comment }}
+
+LANG={{ common_locales_lang }}
+{% if common_locales_language | length %}
+LANGUAGE={{ common_locales_language }}
+{% endif %}
+{% for name, value in common_locales_lc | dictsort %}
+{{ name | upper }}="{{ value }}"
+{% endfor %}

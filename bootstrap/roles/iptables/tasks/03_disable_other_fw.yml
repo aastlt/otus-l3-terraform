@@ -1,0 +1,13 @@
+---
+- name: Disable other firewalls
+  when: iptables_disable_firewalld or iptables_disable_ufw
+  ansible.builtin.include_tasks: "{{ task_file }}"
+  with_first_found:
+    - "noauto_disable_other_fw_{{ ansible_distribution }}-{{ ansible_distribution_major_version }}.yml"
+    - "noauto_disable_other_fw_{{ ansible_os_family }}-{{ ansible_distribution_major_version }}.yml"
+    - "noauto_disable_other_fw_{{ ansible_distribution }}.yml"
+    - "noauto_disable_other_fw_{{ ansible_os_family }}.yml"
+    - "noauto_disable_other_fw_{{ ansible_lsb.id }}.yml"
+  loop_control:
+    loop_var: task_file
+  tags: [iptables]
