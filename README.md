@@ -63,7 +63,16 @@ cloud_id  = "your-cloud-id"
 folder_id = "your-folder-id"
 ```
 
-### 3. Настройка SSH ключей
+### 3. Установка зависимостей
+```bash
+# Установка Python зависимостей
+pip install -r requirements.txt
+
+# Установка Ansible коллекций
+ansible-galaxy install -r bootstrap/requirements.yml
+```
+
+### 4. Настройка SSH ключей
 ```bash
 # Генерация SSH ключа (если нет)
 ssh-keygen -t rsa -b 4096 -f ~/.ssh/id_rsa

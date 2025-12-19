@@ -147,8 +147,7 @@ git clone https://github.com/aastlt/ansible-bootstrap
 cd ansible-bootstrap
 
 # Установите зависимости Ansible
-ansible-galaxy collection install community.general
-ansible-galaxy collection install ansible.posix
+ansible-galaxy install -r requirements.yml
 
 # Настройте inventory
 cp inventory/hosts.example inventory/hosts
@@ -292,6 +291,12 @@ iptables_rules_in:
 - **Python** >= 3.6 на управляющем хосте
 - **Python3** на целевых хостах
 
+### Установка зависимостей
+```bash
+# Установка Ansible коллекций
+ansible-galaxy install -r requirements.yml
+```
+
 ### Сетевые требования
 - SSH доступ к целевым хостам (порт 22 изначально)
 - Sudo права на целевых хостах
@@ -299,8 +304,7 @@ iptables_rules_in:
 
 ### Ansible Collections
 ```bash
-ansible-galaxy collection install community.general
-ansible-galaxy collection install ansible.posix
+ansible-galaxy install -r requirements.yml
 ```
 
 ## Устранение неполадок
